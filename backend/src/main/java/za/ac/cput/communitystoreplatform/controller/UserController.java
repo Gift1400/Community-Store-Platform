@@ -1,44 +1,81 @@
 package za.ac.cput.communitystoreplatform.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.communitystoreplatform.domain.User;
-import za.ac.cput.communitystoreplatform.service.impl.UserServiceImpl;
-import java.util.*;
+import za.ac.cput.communitystoreplatform.service.IUserService;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
-    private final UserServiceImpl userService;
 
-    @Autowired
-    public UserController(UserServiceImpl userService){
+    private final IUserService userService;
+
+    public UserController(IUserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
-    public User create(@RequestBody User user){
-        return userService.create(user);
+    // CREATE
+    @PostMapping
+    public ResponseEntity<User> create(@RequestBody User user) {
+        User createdUser = userService.create(user);
+        return ResponseEntity.ok(createdUser);
     }
 
-    @GetMapping("/read/{userId}")
-    public User read(@PathVariable String userId){
-        return userService.read(userId);
+    // READ ALL
+    @GetMapping
+    public ResponseEntity<List<User>> getAll() {
+        return ResponseEntity.ok(userService.getAll());
     }
 
-    @PutMapping("/update")
-    public User update(@RequestBody User user){
-        return userService.update(user);
+    // READ BY ID
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getById(@PathVariable String userId) {
+
+        User user = userService.read(userId);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("/delete/{userId}")
-    public boolean delete(@PathVariable String userId){
-        return userService.delete(userId);
+    // FIND BY FIRST NAME
+    @GetMapping("/firstName/{firstName}")
+    public ResponseEntity<List<User>> findByFirstName(
+            @PathVariable String firstName) {
+
+        return ResponseEntity.ok(
+                userService.findByFirstName(firstName)
+        );
     }
 
-    @GetMapping("/getAll")
-    public List<User> getAll(){
-        return userService.getAll();
+    // FIND BY LAST NAME
+    @GetMapping("/lastName/{lastName}")
+    public ResponseEntity<List<User>> findByLastName(
+            @PathVariable String lastName) {
+
+        return ResponseEntity.ok(
+                userService.findByLastName(lastName)
+        );
     }
 
+    // UPDATE
+    @PutMapping
+    public ResponseEntity<User> update(@RequestBody User user) {
+        User updatedUser = userService.update(user);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    // DELETE
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> delete(@PathVariable String userId) {
+
+        userService.delete(userId);
+
+        return ResponseEntity.ok().build();
+    }
 }

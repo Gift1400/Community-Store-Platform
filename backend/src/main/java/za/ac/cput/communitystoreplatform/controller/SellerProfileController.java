@@ -1,47 +1,89 @@
 package za.ac.cput.communitystoreplatform.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import za.ac.cput.communitystoreplatform.domain.SellerProfile;
-import za.ac.cput.communitystoreplatform.service.impl.SellerProfileServiceImpl;
+import za.ac.cput.communitystoreplatform.service.ISellerProfileService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/sellerProfile")
+@RequestMapping("/seller-profiles")
 public class SellerProfileController {
-    private final SellerProfileServiceImpl sellerService;
 
-    @Autowired
-    public SellerProfileController(SellerProfileServiceImpl sellerService){
-        this.sellerService = sellerService;
+    private final ISellerProfileService service;
+
+    public SellerProfileController(
+            ISellerProfileService service) {
+
+        this.service = service;
     }
 
     @PostMapping("/create")
-    public SellerProfile create(@RequestBody SellerProfile sellerProfile){
-        return sellerService.create(sellerProfile);
-    }
+    public ResponseEntity<SellerProfile> create(
+            @RequestBody SellerProfile sellerProfile) {
 
-    @GetMapping("/read/{sellerId}")
-    public SellerProfile read(@PathVariable Integer sellerId){
-        return sellerService.read(sellerId);
+        return new ResponseEntity<>(
+                service.create(sellerProfile),
+                HttpStatus.CREATED
+        );
     }
 
     @PutMapping("/update")
-    public SellerProfile update(@RequestBody SellerProfile sellerProfile){
-        return sellerService.update(sellerProfile);
+    public ResponseEntity<SellerProfile> update(
+            @RequestBody SellerProfile sellerProfile) {
+
+        return ResponseEntity.ok(
+                service.update(sellerProfile));
     }
 
-    @DeleteMapping("/delete/{sellerId}")
-    public boolean delete(@PathVariable Integer sellerId){
-        return sellerService.delete(sellerId);
+    @GetMapping("/{id}")
+    public ResponseEntity<SellerProfile> read(
+            @PathVariable int id) {
+
+        SellerProfile sellerProfile = service.read(id);
+
+        if (sellerProfile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(sellerProfile);
     }
 
-    @GetMapping("/getAll")
-    public List<SellerProfile> getAll(){
-        return sellerService.getAll();
+    @GetMapping("/all")
+    public ResponseEntity<List<SellerProfile>> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("/store/{storeName}")
+    public ResponseEntity<SellerProfile> findByStoreName(
+            @PathVariable String storeName) {
+
+        SellerProfile sellerProfile =
+                service.findByStoreName(storeName);
+
+        if (sellerProfile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(sellerProfile);
+    }
+
+    @GetMapping("/verification/{status}")
+    public ResponseEntity<List<SellerProfile>>
+    findByVerificationStatus(@PathVariable String status) {
+
+        return ResponseEntity.ok(
+                service.findByVerificationStatus(status));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(
+            @PathVariable int id) {
+
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

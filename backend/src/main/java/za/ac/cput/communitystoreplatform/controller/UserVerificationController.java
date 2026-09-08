@@ -1,37 +1,84 @@
 package za.ac.cput.communitystoreplatform.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.communitystoreplatform.domain.UserVerification;
-import za.ac.cput.communitystoreplatform.service.impl.UserVerificationServiceImpl;
+import za.ac.cput.communitystoreplatform.service.IUserVerificationService;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/userVerification")
+@RequestMapping("/user-verifications")
 public class UserVerificationController {
-    private final UserVerificationServiceImpl service;
 
-    @Autowired
-    public UserVerificationController(UserVerificationServiceImpl service){
+    private final IUserVerificationService service;
+
+    public UserVerificationController(
+            IUserVerificationService service) {
+
         this.service = service;
     }
 
     @PostMapping("/create")
-    public UserVerification create(@RequestBody UserVerification userVerification){
-        return service.create(userVerification);
-    }
+    public ResponseEntity<UserVerification> create(
+            @RequestBody UserVerification verification) {
 
-    @GetMapping("/read/{verificationId")
-    public UserVerification read(@PathVariable Integer verificationId){
-        return service.read(verificationId);
+        return new ResponseEntity<>(
+                service.create(verification),
+                HttpStatus.CREATED
+        );
     }
 
     @PutMapping("/update")
-    public UserVerification update(@RequestBody UserVerification userVerification){
-        return service.update(userVerification);
+    public ResponseEntity<UserVerification> update(
+            @RequestBody UserVerification verification) {
+
+        return ResponseEntity.ok(
+                service.update(verification));
     }
 
-    @DeleteMapping("/delete/{verificationId}")
-    public boolean delete(@PathVariable Integer verificationId){
-        return service.delete(verificationId);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserVerification> read(
+            @PathVariable int id) {
+
+        UserVerification verification =
+                service.read(id);
+
+        if (verification == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(verification);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserVerification>> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<UserVerification>>
+    findByType(@PathVariable String type) {
+
+        return ResponseEntity.ok(
+                service.findByVerificationType(type));
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<UserVerification>>
+    findByStatus(@PathVariable String status) {
+
+        return ResponseEntity.ok(
+                service.findByVerificationStatus(status));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(
+            @PathVariable int id) {
+
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

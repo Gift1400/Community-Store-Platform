@@ -1,44 +1,77 @@
 package za.ac.cput.communitystoreplatform.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.communitystoreplatform.domain.Category;
-import za.ac.cput.communitystoreplatform.service.impl.CategoryServiceImpl;
+import za.ac.cput.communitystoreplatform.service.ICategoryService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 public class CategoryController {
-    private final CategoryServiceImpl categoryService;
 
-    @Autowired
-    public CategoryController(CategoryServiceImpl categoryService){
-        this.categoryService = categoryService;
+    private final ICategoryService service;
+
+    public CategoryController(ICategoryService service) {
+        this.service = service;
     }
 
     @PostMapping("/create")
-    public Category create(@RequestBody Category category){
-        return categoryService.create(category);
-    }
+    public ResponseEntity<Category> create(
+            @RequestBody Category category) {
 
-    @GetMapping("/read/{categoryId")
-    public Category read(@PathVariable Integer categoryId){
-        return categoryService.read(categoryId);
+        return new ResponseEntity<>(
+                service.create(category),
+                HttpStatus.CREATED
+        );
     }
 
     @PutMapping("/update")
-    public Category update(@RequestBody Category category){
-        return categoryService.update(category);
+    public ResponseEntity<Category> update(
+            @RequestBody Category category) {
+
+        return ResponseEntity.ok(service.update(category));
     }
 
-    @DeleteMapping("/delete/{categoryId}")
-    public boolean delete(@PathVariable Integer categoryId){
-        return categoryService.delete(categoryId);
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> read(
+            @PathVariable int id) {
+
+        Category category = service.read(id);
+
+        if (category == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(category);
     }
 
-    @GetMapping("/getAll")
-    public List<Category> getAll(){
-        return categoryService.getAll();
+    @GetMapping("/all")
+    public ResponseEntity<List<Category>> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Category> findByName(
+            @PathVariable String name) {
+
+        Category category = service.findByCategoryName(name);
+
+        if (category == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(category);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(
+            @PathVariable int id) {
+
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
