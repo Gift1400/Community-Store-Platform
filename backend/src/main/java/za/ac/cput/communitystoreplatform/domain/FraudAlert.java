@@ -1,8 +1,6 @@
 package za.ac.cput.communitystoreplatform.domain;
 
 import jakarta.persistence.*;
-import org.springframework.resilience.annotation.EnableResilientMethods;
-
 import java.time.LocalDateTime;
 
 @Entity
