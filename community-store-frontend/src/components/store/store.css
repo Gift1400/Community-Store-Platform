@@ -485,6 +485,7 @@ a.btn {
 
 .product-form input[type='text'],
 .product-form input[type='number'],
+.product-form select,
 .product-form textarea {
   width: 100%;
   box-sizing: border-box;
@@ -530,7 +531,8 @@ a.btn {
 .product-image {
   display: block;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
   border-radius: 8px;
 }
 

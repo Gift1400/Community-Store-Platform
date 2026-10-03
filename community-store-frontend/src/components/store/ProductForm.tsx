@@ -1,6 +1,8 @@
 import { type FormEvent, useState } from 'react';
 import type { Product } from '../../types/product';
 import ProductImage from './ProductImage';
+import { productImageSrc, resizeImage, validateImageFile } from '../../utils/productImages';
+import { SAMPLE_IMAGES } from '../../utils/sampleImages';
 import './store.css';
 
 export interface ProductFormValues {
@@ -13,6 +15,8 @@ export interface ProductFormValues {
   ecoFriendly: boolean;
   status: string;
   imageUrl?: string;
+  // A picture chosen from the device. When set, it replaces any pasted link.
+  imageFile?: File;
 }
 
 interface ProductFormProps {
@@ -48,7 +52,29 @@ export default function ProductForm({
   const [status, setStatus] = useState(initial?.status ?? 'Available');
   const [imageUrl, setImageUrl] = useState(initial?.imageUrl ?? '');
   const [ecoFriendly, setEcoFriendly] = useState(initial?.ecoFriendly ?? false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
   const [validation, setValidation] = useState<string | null>(null);
+
+  async function handleFileChange(file: File | undefined) {
+    if (!file) {
+      setImageFile(null);
+      setFilePreview(null);
+      return;
+    }
+    const problem = validateImageFile(file);
+    if (problem) {
+      setValidation(problem);
+      return;
+    }
+    try {
+      setFilePreview(await resizeImage(file));
+      setImageFile(file);
+      setValidation(null);
+    } catch {
+      setValidation("Couldn't read that picture. Please try a different file.");
+    }
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -74,8 +100,8 @@ export default function ProductForm({
     }
 
     const trimmedUrl = imageUrl.trim();
-    if (trimmedUrl && !/^https?:\/\//i.test(trimmedUrl)) {
-      setValidation('Image URL must start with http:// or https://');
+    if (!imageFile && trimmedUrl && !/^(https?:\/\/|\/images\/)/i.test(trimmedUrl)) {
+      setValidation('Image link must start with http:// or https://');
       return;
     }
 
@@ -89,7 +115,8 @@ export default function ProductForm({
       listingType: listingType.trim(),
       ecoFriendly,
       status: status.trim(),
-      imageUrl: trimmedUrl || undefined,
+      imageUrl: imageFile ? undefined : trimmedUrl || undefined,
+      imageFile: imageFile ?? undefined,
     });
   }
 
@@ -148,7 +175,41 @@ export default function ProductForm({
       </div>
 
       <div>
-        <label htmlFor="pf-image">Image URL (optional)</label>
+        <label htmlFor="pf-file">Picture from your device (optional)</label>
+        <input
+          id="pf-file"
+          type="file"
+          accept="image/*"
+          onChange={(e) => void handleFileChange(e.target.files?.[0])}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="pf-sample">Or choose a sample picture (optional)</label>
+        <select
+          id="pf-sample"
+          value={SAMPLE_IMAGES.some((g) => g.images.some((i) => i.src === imageUrl)) ? imageUrl : ''}
+          onChange={(e) => {
+            setImageUrl(e.target.value);
+            setImageFile(null);
+            setFilePreview(null);
+          }}
+        >
+          <option value="">None</option>
+          {SAMPLE_IMAGES.map((group) => (
+            <optgroup key={group.category} label={group.category}>
+              {group.images.map((img) => (
+                <option key={img.src} value={img.src}>
+                  {img.label}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="pf-image">Or paste an image link (optional)</label>
         <input
           id="pf-image"
           type="text"
@@ -156,7 +217,11 @@ export default function ProductForm({
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
         />
-        <ProductImage src={imageUrl.trim() || undefined} alt="Preview" className="product-form__preview" />
+        <ProductImage
+          src={filePreview ?? (imageUrl.trim() || (initial ? productImageSrc(initial) : undefined))}
+          alt="Preview"
+          className="product-form__preview"
+        />
       </div>
 
       <div className="product-form__check">

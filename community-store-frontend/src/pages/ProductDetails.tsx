@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { productApi } from '../api/productApi';
 import { reviewApi } from '../api/reviewApi';
 import type { Product } from '../types/product';
@@ -7,6 +7,7 @@ import type { Review } from '../types/review';
 import ReviewList from '../components/store/ReviewList';
 import ReviewForm from '../components/store/ReviewForm';
 import ProductImage from '../components/store/ProductImage';
+import { productImageSrc } from '../utils/productImages';
 import '../components/store/store.css';
 
 // TODO(auth integration): replace with the real auth/user context once
@@ -22,6 +23,8 @@ export default function ProductDetails() {
 
 function ProductDetailsContent({ productId }: { productId: number }) {
   const invalidId = !Number.isFinite(productId);
+  const location = useLocation();
+  const demoImageNote = (location.state as { demoImage?: boolean } | null)?.demoImage === true;
 
   const [product, setProduct] = useState<Product | null>(null);
   const [productLoading, setProductLoading] = useState(true);
@@ -110,9 +113,16 @@ function ProductDetailsContent({ productId }: { productId: number }) {
         &larr; Back to store
       </Link>
 
+      {demoImageNote && (
+        <div className="state-box">
+          The picture was saved in this browser only, because the server can't store uploads yet.
+          Other people won't see it.
+        </div>
+      )}
+
       <div className="product-details__layout">
         <ProductImage
-          src={product.imageUrl}
+          src={productImageSrc(product)}
           alt={product.productName}
           className="product-details__image"
         />

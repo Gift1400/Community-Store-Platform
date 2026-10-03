@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { productApi } from '../api/productApi';
 import type { Product, ProductPayload } from '../types/product';
 import ProductForm, { type ProductFormValues } from '../components/store/ProductForm';
+import { resizeImage, setLocalImage } from '../utils/productImages';
 import '../components/store/store.css';
 
 // Used only to suggest values in the form; the user can type anything.
@@ -68,11 +69,12 @@ function SellProductContent({ productId }: { productId: number | null }) {
 
     try {
       let saved: Product;
+      const { imageFile, ...productValues } = values;
 
       if (existing) {
         const payload: ProductPayload = {
           productId: existing.productId,
-          ...values,
+          ...productValues,
           dateCreated: existing.dateCreated,
           dateUpdated: today,
         };
@@ -84,14 +86,27 @@ function SellProductContent({ productId }: { productId: number | null }) {
         const nextId = latest.reduce((max, p) => Math.max(max, p.productId), 0) + 1;
         const payload: ProductPayload = {
           productId: nextId,
-          ...values,
+          ...productValues,
           dateCreated: today,
           dateUpdated: today,
         };
         saved = await productApi.create(payload);
       }
 
-      navigate(`/products/${saved.productId}`);
+      // Picture from the device: try the server first; if it has no upload
+      // endpoint yet, keep a demo copy in this browser only.
+      let demoImage = false;
+      if (imageFile) {
+        try {
+          await productApi.uploadImage(saved.productId, imageFile);
+        } catch {
+          const stored = setLocalImage(saved.productId, await resizeImage(imageFile));
+          if (!stored) throw new Error('storage');
+          demoImage = true;
+        }
+      }
+
+      navigate(`/products/${saved.productId}`, { state: { demoImage } });
     } catch {
       setSubmitError("Couldn't save the listing. Please try again.");
       setSubmitting(false);

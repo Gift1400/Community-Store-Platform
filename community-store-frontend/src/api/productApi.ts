@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut } from './client';
+import { API_BASE_URL, ApiError, apiGet, apiPost, apiPut } from './client';
 import type { Product, ProductPayload } from '../types/product';
 
 // Wraps za.ac.cput.communitystoreplatform.controller.ProductController
@@ -21,4 +21,17 @@ export const productApi = {
 
   update: (payload: ProductPayload) =>
     apiPut<Product>(`${PRODUCT_PATH}/update`, payload),
+
+  // Expects POST /products/{id}/image with a multipart field named "file"
+  // that returns the updated Product. See BACKEND_IMAGE_UPLOAD.md.
+  uploadImage: async (productId: number, file: File): Promise<Product> => {
+    const body = new FormData();
+    body.append('file', file);
+    const res = await fetch(`${API_BASE_URL}${PRODUCT_PATH}/${productId}/image`, {
+      method: 'POST',
+      body,
+    });
+    if (!res.ok) throw new ApiError(`Upload failed with status ${res.status}`, res.status);
+    return res.json() as Promise<Product>;
+  },
 };
