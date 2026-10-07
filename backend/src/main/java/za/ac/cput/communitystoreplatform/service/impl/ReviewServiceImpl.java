@@ -42,7 +42,7 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public List<Review> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
 }

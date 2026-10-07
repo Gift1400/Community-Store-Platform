@@ -14,6 +14,7 @@ public class Product {
     private String description;
     private double price;
     private int quantity;
+    @Column(name = "product_condition")
     private String condition;
     private String listingType;
     private boolean ecoFriendly;

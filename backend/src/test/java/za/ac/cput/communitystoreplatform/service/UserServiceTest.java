@@ -1,5 +1,4 @@
-```java
-        package za.ac.cput.communitystoreplatform.service;
+package za.ac.cput.communitystoreplatform.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import za.ac.cput.communitystoreplatform.domain.User;
 import za.ac.cput.communitystoreplatform.repository.UserRepository;
-import za.ac.cput.communitystoreplatform.service.impl.UserService;
+import za.ac.cput.communitystoreplatform.service.impl.UserServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,14 +20,14 @@ class UserServiceTest {
     @Mock
     private UserRepository repository;
 
-    private UserService service;
+    private UserServiceImpl service;
     private User user;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        service = new UserService(repository);
+        service = new UserServiceImpl(repository);
 
         user = new User.Builder()
                 .setUserId("U001")
@@ -152,4 +151,3 @@ class UserServiceTest {
         verify(repository).deleteById("U001");
     }
 }
-```

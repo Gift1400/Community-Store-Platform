@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import za.ac.cput.communitystoreplatform.domain.Category;
 import za.ac.cput.communitystoreplatform.repository.CategoryRepository;
-import za.ac.cput.communitystoreplatform.service.impl.CategoryService;
+import za.ac.cput.communitystoreplatform.service.impl.CategoryServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,14 +20,14 @@ class CategoryServiceTest {
     @Mock
     private CategoryRepository repository;
 
-    private CategoryService service;
+    private CategoryServiceImpl service;
     private Category category;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        service = new CategoryService(repository);
+        service = new CategoryServiceImpl(repository);
 
         category = new Category.Builder()
                 .setCategoryId(1)

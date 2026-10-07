@@ -3,9 +3,10 @@ package za.ac.cput.communitystoreplatform.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-@Embeddable
+@Entity
 @Table(name = "address")
 public class Address {
+    @Id
     private int addressId;
 
     @OneToOne
