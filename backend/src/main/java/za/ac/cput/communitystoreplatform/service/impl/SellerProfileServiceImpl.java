@@ -8,11 +8,11 @@ import za.ac.cput.communitystoreplatform.service.ISellerProfileService;
 import java.util.List;
 
 @Service
-public class SellerProfileService implements ISellerProfileService {
+public class SellerProfileServiceImpl implements ISellerProfileService {
 
     private final SellerProfileRepository repository;
 
-    public SellerProfileService(
+    public SellerProfileServiceImpl(
             SellerProfileRepository repository) {
 
         this.repository = repository;

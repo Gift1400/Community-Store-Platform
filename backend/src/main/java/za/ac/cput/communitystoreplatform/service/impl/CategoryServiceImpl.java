@@ -8,11 +8,11 @@ import za.ac.cput.communitystoreplatform.service.ICategoryService;
 import java.util.List;
 
 @Service
-public class CategoryService implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
 
     private final CategoryRepository repository;
 
-    public CategoryService(CategoryRepository repository) {
+    public CategoryServiceImpl(CategoryRepository repository) {
         this.repository = repository;
     }
 

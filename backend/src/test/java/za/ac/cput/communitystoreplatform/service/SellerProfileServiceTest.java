@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import za.ac.cput.communitystoreplatform.domain.SellerProfile;
 import za.ac.cput.communitystoreplatform.repository.SellerProfileRepository;
-import za.ac.cput.communitystoreplatform.service.impl.SellerProfileService;
+import za.ac.cput.communitystoreplatform.service.impl.SellerProfileServiceImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -21,14 +21,14 @@ class SellerProfileServiceTest {
     @Mock
     private SellerProfileRepository repository;
 
-    private SellerProfileService service;
+    private SellerProfileServiceImpl service;
     private SellerProfile sellerProfile;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        service = new SellerProfileService(repository);
+        service = new SellerProfileServiceImpl(repository);
 
         sellerProfile = new SellerProfile.Builder()
                 .setSellerId(1)

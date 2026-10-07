@@ -8,12 +8,12 @@ import za.ac.cput.communitystoreplatform.service.IUserVerificationService;
 import java.util.List;
 
 @Service
-public class UserVerificationService
+public class UserVerificationServiceImpl
         implements IUserVerificationService {
 
     private final UserVerificationRepository repository;
 
-    public UserVerificationService(
+    public UserVerificationServiceImpl(
             UserVerificationRepository repository) {
 
         this.repository = repository;

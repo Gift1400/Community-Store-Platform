@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import za.ac.cput.communitystoreplatform.domain.UserVerification;
 import za.ac.cput.communitystoreplatform.repository.UserVerificationRepository;
-import za.ac.cput.communitystoreplatform.service.impl.UserVerificationService;
+import za.ac.cput.communitystoreplatform.service.impl.UserVerificationServiceImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -21,14 +21,14 @@ class UserVerificationServiceTest {
     @Mock
     private UserVerificationRepository repository;
 
-    private UserVerificationService service;
+    private UserVerificationServiceImpl service;
     private UserVerification verification;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        service = new UserVerificationService(repository);
+        service = new UserVerificationServiceImpl(repository);
 
         verification = new UserVerification.Builder()
                 .setVerificationId(1)

@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import za.ac.cput.communitystoreplatform.domain.UserVerification;
-import za.ac.cput.communitystoreplatform.repository.UserVerificationRepository;
-import za.ac.cput.communitystoreplatform.service.impl.UserVerificationService;
+import za.ac.cput.communitystoreplatform.domain.Product;
+import za.ac.cput.communitystoreplatform.repository.ProductRepository;
+import za.ac.cput.communitystoreplatform.service.impl.ProductServiceImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -16,76 +16,70 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserVerificationServiceTest {
+class ProductServiceTest {
 
     @Mock
-    private UserVerificationRepository repository;
+    private ProductRepository repository;
 
-    private UserVerificationService service;
-    private UserVerification verification;
+    private ProductServiceImpl service;
+    private Product product;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        service = new UserVerificationService(repository);
+        service = new ProductServiceImpl(repository);
 
-        verification = new UserVerification.Builder()
-                .setVerificationId(1)
-                .setVerificationType("ID_DOCUMENT")
-                .setVerificationStatus("VERIFIED")
-                .setVerificationDocument("id-document.pdf")
-                .setVerifiedAt(LocalDate.now())
+        product = new Product.Builder()
+                .setProductId(1)
+                .setProductName("Denim Jacket")
+                .setDescription("Gently used denim jacket")
+                .setPrice(250.00)
+                .setQuantity(3)
+                .setCondition("USED")
+                .setListingType("FIXED_PRICE")
+                .setEcoFriendly(true)
+                .setStatus("ACTIVE")
+                .setDateCreated(LocalDate.now())
+                .setDateUpdated(LocalDate.now())
                 .build();
     }
 
     @Test
     void create() {
-        when(repository.save(verification))
-                .thenReturn(verification);
+        when(repository.save(product)).thenReturn(product);
 
-        UserVerification result =
-                service.create(verification);
+        Product result = service.create(product);
 
         assertNotNull(result);
-        assertEquals(
-                "ID_DOCUMENT",
-                result.getVerificationType()
-        );
+        assertEquals("Denim Jacket", result.getProductName());
+        assertEquals(250.00, result.getPrice());
 
-        verify(repository).save(verification);
+        verify(repository).save(product);
     }
 
     @Test
     void update() {
-        when(repository.save(verification))
-                .thenReturn(verification);
+        when(repository.save(product)).thenReturn(product);
 
-        UserVerification result =
-                service.update(verification);
+        Product result = service.update(product);
 
         assertNotNull(result);
-        assertEquals(
-                1,
-                result.getVerificationId()
-        );
+        assertEquals(1, result.getProductId());
 
-        verify(repository).save(verification);
+        verify(repository).save(product);
     }
 
     @Test
     void read() {
         when(repository.findById(1))
-                .thenReturn(Optional.of(verification));
+                .thenReturn(Optional.of(product));
 
-        UserVerification result =
-                service.read(1);
+        Product result = service.read(1);
 
         assertNotNull(result);
-        assertEquals(
-                1,
-                result.getVerificationId()
-        );
+        assertEquals(1, result.getProductId());
+        assertEquals("Denim Jacket", result.getProductName());
     }
 
     @Test
@@ -93,65 +87,59 @@ class UserVerificationServiceTest {
         when(repository.findById(99))
                 .thenReturn(Optional.empty());
 
-        UserVerification result =
-                service.read(99);
+        Product result = service.read(99);
 
         assertNull(result);
     }
 
     @Test
     void getAll() {
-        List<UserVerification> verifications =
-                Arrays.asList(verification);
+        List<Product> products = Arrays.asList(product);
 
-        when(repository.findAll())
-                .thenReturn(verifications);
+        when(repository.findAll()).thenReturn(products);
 
-        List<UserVerification> result =
-                service.getAll();
+        List<Product> result = service.getAll();
 
         assertNotNull(result);
         assertEquals(1, result.size());
+        assertEquals("Denim Jacket",
+                result.get(0).getProductName());
 
         verify(repository).findAll();
     }
 
     @Test
-    void findByVerificationType() {
-        List<UserVerification> verifications =
-                Arrays.asList(verification);
+    void findByProductName() {
+        List<Product> products = Arrays.asList(product);
 
-        when(repository.findByVerificationType("ID_DOCUMENT"))
-                .thenReturn(verifications);
+        when(repository.findByProductNameContainingIgnoreCase("Denim"))
+                .thenReturn(products);
 
-        List<UserVerification> result =
-                service.findByVerificationType("ID_DOCUMENT");
+        List<Product> result =
+                service.findByProductName("Denim");
 
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals(
-                "ID_DOCUMENT",
-                result.get(0).getVerificationType()
-        );
+        assertEquals("Denim Jacket",
+                result.get(0).getProductName());
     }
 
     @Test
-    void findByVerificationStatus() {
-        List<UserVerification> verifications =
-                Arrays.asList(verification);
+    void findByStatus() {
+        List<Product> products = Arrays.asList(product);
 
-        when(repository.findByVerificationStatus("VERIFIED"))
-                .thenReturn(verifications);
+        when(repository.findByStatus("ACTIVE"))
+                .thenReturn(products);
 
-        List<UserVerification> result =
-                service.findByVerificationStatus("VERIFIED");
+        List<Product> result =
+                service.findByStatus("ACTIVE");
 
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals(
-                "VERIFIED",
-                result.get(0).getVerificationStatus()
-        );
+        assertEquals("ACTIVE",
+                result.get(0).getStatus());
+
+        verify(repository).findByStatus("ACTIVE");
     }
 
     @Test

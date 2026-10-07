@@ -1,13 +1,13 @@
 package za.ac.cput.communitystoreplatform.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 import za.ac.cput.communitystoreplatform.domain.User;
 import za.ac.cput.communitystoreplatform.service.IUserService;
 
@@ -22,7 +22,7 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private IUserService userService;
 
     @Autowired
@@ -95,7 +95,9 @@ class UserControllerTest {
     @Test
     void delete() throws Exception {
 
-        mockMvc.perform(delete("/users/U001"))
+        mockMvc.perform(
+                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                                .delete("/users/U001"))
                 .andExpect(status().isOk());
     }
 

@@ -43,7 +43,7 @@ public class FraudAlertServiceImpl implements IFraudAlertService {
 
     @Override
     public List<FraudAlert> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
 }

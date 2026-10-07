@@ -8,11 +8,11 @@ import za.ac.cput.communitystoreplatform.service.IProductService;
 import java.util.List;
 
 @Service
-public class ProductService implements IProductService {
+public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository repository;
 
-    public ProductService(ProductRepository repository) {
+    public ProductServiceImpl(ProductRepository repository) {
         this.repository = repository;
     }
 
