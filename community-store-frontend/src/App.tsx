@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import SiteLayout from './components/SiteLayout'
 import Home from './pages/Home'
 import About from './pages/About'
+import Cart from './pages/Cart'
 import Store from './pages/Store'
 import ProductDetails from './pages/ProductDetails'
 import SellProduct from './pages/SellProduct'
@@ -23,6 +24,9 @@ function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/sell" element={<SellProduct />} />
         <Route path="/sell/:id" element={<SellProduct />} />
+
+        {/* FE-03 */}
+        <Route path="/cart" element={<Cart />} />
 
         {/* FE-01 */}
         <Route path="/login" element={<Login />} />
