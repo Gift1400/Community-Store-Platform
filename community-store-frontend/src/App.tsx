@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import SiteLayout from './components/SiteLayout'
+import Home from './pages/Home'
 import Store from './pages/Store'
 import ProductDetails from './pages/ProductDetails'
 import SellProduct from './pages/SellProduct'
@@ -13,7 +14,7 @@ function App() {
     <Routes>
       {/* Navbar + Footer wrap every page */}
       <Route element={<SiteLayout />}>
-        <Route path="/" element={<Navigate to="/store" replace />} />
+        <Route path="/" element={<Home />} />
 
         {/* FE-02 */}
         <Route path="/store" element={<Store />} />

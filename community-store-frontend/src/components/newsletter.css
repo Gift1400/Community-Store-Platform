@@ -1,0 +1,94 @@
+/* Newsletter sign-up. Every class starts with "newsletter" so nothing leaks. */
+
+.newsletter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 56px 32px 64px;
+  padding: 32px 40px;
+  border-radius: 16px;
+  background: #08060d;
+  color: #fff;
+  text-align: left;
+}
+
+.newsletter h2 {
+  margin: 0 0 6px;
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: -0.4px;
+}
+
+.newsletter p {
+  color: #cfcbd6;
+  font-size: 15px;
+}
+
+.newsletter__form {
+  display: flex;
+  flex: 1 1 320px;
+  gap: 8px;
+  max-width: 440px;
+}
+
+.newsletter__form input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #3a3547;
+  border-radius: 8px;
+  background: #16131f;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+}
+
+.newsletter__form input::placeholder {
+  color: #8f8a99;
+}
+
+.newsletter__form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.newsletter__form button {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.newsletter__form button:hover {
+  opacity: 0.9;
+}
+
+.newsletter__form button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.newsletter__note {
+  width: 100%;
+  margin: 0;
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .newsletter {
+    margin: 40px 16px 48px;
+    padding: 24px 20px;
+  }
+
+  .newsletter__form {
+    max-width: none;
+  }
+}
