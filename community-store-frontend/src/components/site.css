@@ -1,0 +1,184 @@
+/* Shared Navbar / Footer. Every class is prefixed "site-" so nothing leaks
+   into other pages, and there are no element-level (body, a, *) rules. */
+
+.site-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  text-align: left;
+}
+
+.site-logo {
+  color: var(--text-h);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  text-decoration: none;
+}
+
+.site-logo span {
+  color: var(--accent);
+}
+
+.site-links {
+  display: flex;
+  gap: 28px;
+}
+
+.site-links a {
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  color: var(--text);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.site-links a:hover {
+  color: var(--text-h);
+}
+
+.site-links a.active {
+  color: var(--text-h);
+  border-bottom-color: var(--accent);
+}
+
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.site-icon-link {
+  display: flex;
+  color: var(--text-h);
+}
+
+.site-icon-link:hover {
+  color: var(--accent);
+}
+
+.site-account {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-h);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-account:hover {
+  background: var(--code-bg);
+}
+
+.site-nav a:focus-visible,
+.site-footer a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Footer */
+
+.site-footer {
+  padding: 44px 40px 24px;
+  background: #08060d;
+  color: #cfcbd6;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.site-footer__brand {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+.site-footer__brand span {
+  color: var(--accent);
+}
+
+.site-footer address {
+  font-style: normal;
+}
+
+.site-footer h3 {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.site-footer ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a {
+  color: #cfcbd6;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.site-footer__legal {
+  margin: 36px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid #2a2733;
+  font-size: 13px;
+  color: #8f8a99;
+}
+
+@media (max-width: 700px) {
+  .site-nav {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+  }
+
+  .site-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 22px;
+  }
+
+  .site-footer {
+    padding: 32px 20px 20px;
+  }
+
+  .site-footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
