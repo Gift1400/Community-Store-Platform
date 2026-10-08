@@ -1,0 +1,131 @@
+/* About page. Every class starts with "about-" so nothing leaks into other pages. */
+
+.about-hero {
+  padding: 64px 32px 0;
+  text-align: left;
+}
+
+.about-hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(36px, 5vw, 56px);
+  letter-spacing: -1.5px;
+}
+
+.about-hero h2 {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.about-hero p {
+  max-width: 62ch;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.about-section {
+  padding: 56px 32px 0;
+  text-align: left;
+}
+
+.about-section--last {
+  padding-bottom: 64px;
+}
+
+.about-section h2 {
+  margin: 0 0 24px;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+}
+
+/* Story timeline */
+
+.about-story {
+  margin: 0;
+  padding: 0 0 0 28px;
+  list-style: none;
+  border-left: 2px solid var(--accent-border);
+}
+
+.about-story li {
+  position: relative;
+  padding: 0 0 28px 20px;
+}
+
+.about-story li:last-child {
+  padding-bottom: 0;
+}
+
+.about-story li::before {
+  content: '';
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--bg);
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.about-story h3 {
+  margin: 0 0 4px;
+  color: var(--text-h);
+  font-size: 19px;
+}
+
+.about-story p {
+  max-width: 60ch;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Values */
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-values li {
+  padding-top: 20px;
+  border-top: 3px solid var(--accent);
+}
+
+.about-values h3 {
+  margin: 0 0 6px;
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+.about-values p {
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .about-hero {
+    padding: 40px 16px 0;
+  }
+
+  .about-section {
+    padding: 40px 16px 0;
+  }
+
+  .about-section--last {
+    padding-bottom: 48px;
+  }
+
+  .about-values {
+    grid-template-columns: 1fr;
+  }
+}

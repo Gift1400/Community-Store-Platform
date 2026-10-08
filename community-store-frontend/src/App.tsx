@@ -1,4 +1,8 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import SiteLayout from './components/SiteLayout'
+import Home from './pages/Home'
+import About from './pages/About'
+import Cart from './pages/Cart'
 import Store from './pages/Store'
 import ProductDetails from './pages/ProductDetails'
 import SellProduct from './pages/SellProduct'
@@ -10,19 +14,26 @@ import SellerProfile from './pages/SellerProfile'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/store" replace />} />
+      {/* Navbar + Footer wrap every page */}
+      <Route element={<SiteLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
 
-      {/* FE-02 */}
-      <Route path="/store" element={<Store />} />
-      <Route path="/products/:id" element={<ProductDetails />} />
-      <Route path="/sell" element={<SellProduct />} />
-      <Route path="/sell/:id" element={<SellProduct />} />
+        {/* FE-02 */}
+        <Route path="/store" element={<Store />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/sell" element={<SellProduct />} />
+        <Route path="/sell/:id" element={<SellProduct />} />
 
-      {/* FE-01 */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/seller-profile" element={<SellerProfile />} />
+        {/* FE-03 */}
+        <Route path="/cart" element={<Cart />} />
+
+        {/* FE-01 */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/seller-profile" element={<SellerProfile />} />
+      </Route>
     </Routes>
   )
 }
